@@ -1,19 +1,28 @@
+import json
 import logging
 import os
 import requests
 
 
-def create_h1_request(username, token):
+def create_h1_request(username, token, endpoint: str):
     headers = {
         'Accept': 'application/json'
     }
 
-    r = requests.get(
-        'https://api.hackerone.com/v1/hackers/payments/earnings',
+    resp = requests.get(
+        url=endpoint,
         auth=(username, token),
         headers=headers
     )
-    print(r.json())
+
+    # check if page paginates, recursive call
+    links = resp.json().get('links', {})
+    next_url = links.get('next', None)
+    if next_url:
+        logging.debug(f'[*]Pagination found.. inside virtual environment')
+        create_h1_request(username, token, next_url)
+
+    print("ending here")
     return None
 
 
@@ -24,10 +33,12 @@ if __name__ == '__main__':
         logging.info(f'[*]Running inside virtual environment')
 
     h1_username = os.getenv('H1_USERNAME')
-    h1_api_token = os.environ.get('H1_API_TOKEN', None)
+    h1_api_token = os.getenv('H1_API_TOKEN')
 
     if h1_username is None or h1_api_token is None:
-        logging.warn(f"[!]Set the H1 env variables")
+        logging.warning(f"[!]Set the H1 env variables")
         exit(99)
 
-    create_h1_request(username=h1_username, token=h1_api_token)
+    create_h1_request(username=h1_username,
+                      token=h1_api_token,
+                      endpoint="https://api.hackerone.com/v1/hackers/programs")
