@@ -1,18 +1,19 @@
 import requests
-from collections import namedtuple
-
-H1Program = namedtuple('H1Program', ['id', 'name'])
+from config import H1Program, filename
+import csv
+from src.base_logger import logger
 
 
 def write_results_to_file(results: list):
-    from src.base_logger import logger
     logger.info(f"Writings results {len(results)}")
-    # overwrites any results that exist in the file
-    if len(results):
-        logger.warning(f"Writings results {len(results)}")
-    with open('results.txt', 'w', newline='\n') as result_file:
-        for i in results:
-            result_file.write(f'{i.id},{i.name}\n')
+    if len(results) == 0:
+        logger.warning(f"No results found.")
+    else:
+        with open(filename, 'w', newline='') as result_file:  # overwrites any results that exist in the file
+            csv_out = csv.writer(result_file)
+            csv_out.writerow(['id', 'name', 'offers_bounties', 'triage_active'])
+            for r in results:
+                csv_out.writerow(r)
     return None
 
 
@@ -45,6 +46,8 @@ def get_h1_programs(username,
     for p in h1_results:
         program_id = p.get('id')
         name = p.get('attributes').get('name')
-        company = H1Program(program_id, name)
+        triage_active = p.get('attributes').get('triage_active')
+        offers_bounties = p.get('attributes').get('offers_bounties')
+        company = H1Program(program_id, name, offers_bounties, triage_active)
         h1_programs.append(company)
     return h1_programs
