@@ -1,6 +1,6 @@
 import sys
 from src.main import main
-from src.base_logger import logger
+from conf.base_logger import logger
 
 if __name__ == '__main__':
     logger.info(f'Starting...')

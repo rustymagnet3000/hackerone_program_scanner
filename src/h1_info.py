@@ -1,7 +1,7 @@
 import requests
 from config import H1Program, filename
 import csv
-from src.base_logger import logger
+from conf.base_logger import logger
 
 
 def write_results_to_file(results: list):

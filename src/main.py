@@ -1,6 +1,7 @@
 import os
 from h1_info import get_h1_programs, write_results_to_file
-from src.base_logger import logger
+from conf.base_logger import logger
+from src.config import api_get_programs_endpoint
 from src.h1_scan import read_company_file
 
 
@@ -17,9 +18,9 @@ def main():
 
     read_company_file()
 
-    # programs = get_h1_programs(username=h1_username,
-    #                            token=h1_api_token,
-    #                            endpoint="https://api.hackerone.com/v1/hackers/programs",
-    #                            h1_programs=[])
-    #
-    # write_results_to_file(programs)
+    programs = get_h1_programs(username=h1_username,
+                               token=h1_api_token,
+                               endpoint=api_get_programs_endpoint,
+                               h1_programs=[])
+
+    write_results_to_file(programs)
