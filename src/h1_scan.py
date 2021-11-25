@@ -27,12 +27,9 @@ def read_company_file():
 
 def scrape_company(company_name: str):
     logger.info("Scrape started RESULTS")
-    headers = {
-        'Accept-Encoding': 'identity',
-        'content-type': 'text/html; charset=utf-8'
-    }
+    # default Headers are great, and don't indicate a Python script
     session = HTMLSession()
     resp = session.get(h1_web_endpoint + company_name)
     print(resp)
-    # parse body of text for spelling mistakes
+
 
