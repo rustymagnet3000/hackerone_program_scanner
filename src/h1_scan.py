@@ -1,5 +1,5 @@
 from conf.base_logger import logger
-from config import H1Program, filename, h1_web_endpoint
+from conf.config import H1Program, filename, h1_web_endpoint
 from csv import reader
 from requests_html import HTMLSession
 

@@ -1,7 +1,7 @@
 import pytest
 from requests_html import HTMLSession
 import src
-from config import h1_dummy_endpoint
+from conf.config import h1_dummy_endpoint
 
 
 class Test:

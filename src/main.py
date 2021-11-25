@@ -14,7 +14,7 @@ def main():
 
     if h1_username is None or h1_api_token is None:
         logger.warning(f"Set the H1 env variables")
-        exit(99)
+        return None
 
     read_company_file()
 
