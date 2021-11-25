@@ -1,5 +1,4 @@
 import pytest
-from requests_html import HTMLSession
 from conf.config import (
     h1_dummy_local_endpoint,
     h1_dummy_internet_endpoint,
@@ -22,38 +21,23 @@ class Test:
         }
 
     @pytest.fixture
-    def html_request_session(self, http_headers):
-        session = HTMLSession()
-        session.headers = http_headers
-        return session
-
-    @pytest.fixture
     def h1_program_path(self):
         return 'coinbase'
 
-    def test_local_html_scrape(self, html_request_session):
-        resp = html_request_session.get(h1_dummy_local_endpoint)
+    @pytest.fixture
+    def urllib_h1_request(self, http_headers, h1_program_path):
+        return Request(str(h1_web_endpoint + h1_program_path), headers=http_headers)
+
+    def test_local_html_scrape(self, http_headers):
+        req = Request(h1_dummy_local_endpoint, headers=http_headers)
+        content = urlopen(req).read()
         assert True
 
-    def test_request_headers_do_not_indicate_a_python_script(self, user_agent_clues, html_request_session):
-        user_agent = html_request_session.headers.get('User-Agent')
-        for clue in user_agent_clues:
-            if clue in user_agent:
-                assert False
-        assert True
+    def test_h1_web_is_up(self, urllib_h1_request):
+        content = urlopen(urllib_h1_request).read()
+        assert content is not None
 
-    def test_h1_web_is_up(self, html_request_session):
-        resp = html_request_session.get(h1_web_endpoint)
-        assert resp.ok
-
-    def test_h1_does_not_say_no_js_detected(self, html_request_session, h1_program_path):
-        resp = html_request_session.get(h1_web_endpoint + h1_program_path)
-        resp.html.render()
-        assert True
-
-    def test_h1_allows_urllib(self, h1_program_path):
-        req = Request(h1_web_endpoint + h1_program_path)
-        req.add_header('apikey', 'xxx')
-
-        page = urlopen()
+    def test_h1_allows_urllib(self, urllib_h1_request, http_headers):
+        content = urlopen(urllib_h1_request).read()
+        html_bytes = content.read()
         assert True
