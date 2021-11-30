@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "hackerone_program_scanner"
+version = "0.1.0"
+description = "Scan through H1 Program for errors in program notes"
+authors = ["rustymagnet3000 <5367141+rustymagnet3000@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+requests = "^2.26.0"
+colorlog = "^6.6.0"
+requests-html = "^0.10.0"
+pytest = "^6.2.5"
+config = "^0.5.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

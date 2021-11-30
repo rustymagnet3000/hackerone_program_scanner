@@ -1,0 +1,31 @@
+// example Result from HackerOne
+
+{
+  'data': [
+    {
+      'id': '13',
+      'type': 'program',
+      'attributes': {
+        'handle': 'security',
+        'name': 'HackerOne',
+        'currency': 'usd',
+        'profile_picture': 'https://profile-photos.hackerone-user-content.com/variants/000/000/013/fa942b9b1cbf4faf37482bf68458e1195aab9c02_original.png/fd4ecbe1e3e98c343c7717114485ace2f830f9253103d3cfa7502059868c516c',
+        'submission_state': 'open',
+        'triage_active': True,
+        'state': 'public_mode',
+        'started_accepting_at': '2013-11-06T00:00:00.000Z',
+        'number_of_reports_for_user': 0,
+        'number_of_valid_reports_for_user': 0,
+        'bounty_earned_for_user': 0.0,
+        'last_invitation_accepted_at_for_user': None,
+        'bookmarked': False,
+        'allows_bounty_splitting': True,
+        'offers_bounties': True
+      }
+    }
+  ],
+  'links': {
+    'self': 'https://api.hackerone.com/v1/hackers/programs',
+    'next': 'https://api.hackerone.com/v1/hackers/programs?page%5Bnumber%5D=2'
+  }
+}
