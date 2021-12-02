@@ -14,16 +14,16 @@ class H1creds(NamedTuple):
 
 def check_h1_credentials_exist() -> H1creds:
     """
-    Check got Hackerone Credentials as environment variables
-    :return: Strings of the h1_username, h1_api_token
+    Check Hackerone Credentials exist as environment variables
+    :return: NamedTuple of the h1_username, h1_api_token
     """
     if "VIRTUAL_ENV" in os.environ:
         logger.info(f'Running inside virtual environment')
 
     creds = H1creds(os.getenv('H1_USERNAME'), os.getenv('H1_API_TOKEN'))
     if creds.access_token is None or creds.username is None:
-        logger.warning(f"Set the H1 env variables")
+        logger.warning(f"Set the HackerOne env variables")
         sys.exit()
 
-    logger.info(f"Found Hackerone Credentials")
+    logger.info(f"Found HackerOne Credentials")
     return creds
