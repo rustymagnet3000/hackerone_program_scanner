@@ -1,16 +1,12 @@
 import pytest
 from conf.config import (
     h1_dummy_local_endpoint,
-    h1_dummy_internet_endpoint,
     h1_web_endpoint
 )
 from urllib.request import urlopen, Request
 
 
 class Test:
-    @pytest.fixture
-    def user_agent_clues(self):
-        return {"python", "pycharm"}
 
     @pytest.fixture
     def http_headers(self):
@@ -30,14 +26,17 @@ class Test:
 
     def test_local_html_scrape(self, http_headers):
         req = Request(h1_dummy_local_endpoint, headers=http_headers)
-        content = urlopen(req).read()
-        assert True
+        _content = urlopen(req).read()
+        assert isinstance(_content, bytes)
 
     def test_h1_web_is_up(self, urllib_h1_request):
-        content = urlopen(urllib_h1_request).read()
-        assert content is not None
+        with urlopen(urllib_h1_request) as f:
+            assert f.read(50).decode('utf-8')   # read 50 bytes
 
-    def test_h1_allows_urllib(self, urllib_h1_request, http_headers):
-        content = urlopen(urllib_h1_request).read()
-        html_bytes = content.read()
-        assert True
+    def test_h1_scrape_response_code(self, urllib_h1_request):
+        with urlopen(urllib_h1_request) as f:
+            assert f.status == 200
+
+    def test_h1_scrape_response_code(self, urllib_h1_request):
+        with urlopen(urllib_h1_request) as f:
+            assert f.status == 200

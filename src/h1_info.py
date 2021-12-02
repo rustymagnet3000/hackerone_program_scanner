@@ -1,5 +1,5 @@
 import requests
-from config import H1Program, filename
+from conf.config import H1Program, filename
 import csv
 from conf.base_logger import logger
 

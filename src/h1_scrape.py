@@ -1,7 +1,6 @@
 from conf.base_logger import logger
 from conf.config import H1Program, filename, h1_web_endpoint
 from csv import reader
-from requests_html import HTMLSession
 
 
 def open_file_of_companies():
