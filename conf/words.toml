@@ -5,3 +5,7 @@
     patterns = ['licence', 'lisence']
   [sec_words.counterfeit]
     patterns = ['counterfit', 'counter fit']
+  [sec_words.program]
+    patterns = ['progrm', 'progam']
+  [sec_words.fox]
+    patterns = ['foxx', 'foxxx']
