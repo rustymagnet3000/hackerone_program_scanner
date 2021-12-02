@@ -12,17 +12,19 @@ The API does not reveal info about `Private` programs.
 
 ### Scraping
 
-There was no API to get the contents of a companies H1 program.  This meant a scraping approach.
+There was no API to get the contents of a companies HackerOne program.  This meant a scraping approach.
 
 Out of the box, the below won't work.
 
 ```
-    session = HTMLSession()
-    resp = session.get('https://hackerone.com/coinbase')
+    req = Request('https://hackerone.com/coinbase')
+    urlopen(req).read()
 ```
-Some logic on H1 was checking for a header before revealing the Company written Bug Bounty policy.  After trial and error, it was clear that H1 was checking the request was made with Javascript.
+
+Logic on H1 was checking for a header before revealing the Company written Bug Bounty policy.  
+
+After trial and error, it was clear that HackerOne was checking the request was made with Javascript.
 ```
-    'Accept': 'application/json',
     'X-Requested-With': 'XMLHttpRequest'
 ```
 ### Usage
