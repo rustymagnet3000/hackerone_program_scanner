@@ -1,6 +1,4 @@
 import pytest
-# from conf.config import SecurityWord
-
 from conf.base_logger import logger
 
 

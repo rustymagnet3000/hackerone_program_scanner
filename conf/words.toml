@@ -7,5 +7,7 @@
     patterns = ['counterfit', 'counter fit']
   [sec_words.program]
     patterns = ['progrm', 'progam']
+  [sec_words.researchers]
+    patterns = ['researchers']
   [sec_words.fox]
     patterns = ['foxx', 'foxxx']

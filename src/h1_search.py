@@ -45,3 +45,5 @@ def search_h1_program_notes_for_misspellings(company: str, h1_program_notes: str
             if re.search(misspelling, h1_program_notes):
                 results.append([company, misspelling])
     return results
+
+
