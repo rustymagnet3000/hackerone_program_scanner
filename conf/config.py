@@ -15,3 +15,7 @@ class H1Program(NamedTuple):
     name: str
     offers_bounties: bool
     triage_active: bool
+
+
+
+

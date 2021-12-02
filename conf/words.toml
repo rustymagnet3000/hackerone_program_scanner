@@ -1,0 +1,7 @@
+[sec_words]
+  [sec_words.malicious]
+    patterns = ['malicous']
+  [sec_words.license]
+    patterns = ['licence', 'lisence']
+  [sec_words.counterfeit]
+    patterns = ['counterfit', 'counter fit']
