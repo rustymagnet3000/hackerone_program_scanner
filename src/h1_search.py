@@ -1,5 +1,6 @@
 import toml
 import re
+from itertools import chain
 
 
 class SecurityWord(object):
@@ -8,7 +9,7 @@ class SecurityWord(object):
     """
     def __init__(self, word: str, patterns: list):
         self.original_word = word.lower()
-        self.incorrect_spellings = frozenset(patterns)
+        self.incorrect_spellings = patterns
 
 
 def get_word_file(file_loc='../conf/words.toml') -> dict:
@@ -32,6 +33,11 @@ def get_word_objects_to_search(words: dict) -> list:
     return list_word_objs
 
 
+def search_h1_web_data(misspelled_words: list, web_text) -> list:
+    results = [bad_spelling for bad_spelling in misspelled_words if re.search(bad_spelling, web_text)]
+    return results
+
+
 def search_h1_program_notes_for_misspellings(company: str, h1_program_notes: str, sec_words: SecurityWord) -> dict:
     """
     :param company: name of H1 Company being analyzed
@@ -39,11 +45,9 @@ def search_h1_program_notes_for_misspellings(company: str, h1_program_notes: str
     :param sec_words: objects to check
     :return:
     """
-    results = []
-    for word in sec_words:
-        for misspelling in word.incorrect_spellings:
-            if re.search(misspelling, h1_program_notes):
-                results.append([company, misspelling])
+
+    list_of_bad_spellings_sets = chain([word.incorrect_spellings for word in sec_words])
+    results = [search_h1_web_data(s, h1_program_notes) for s in list_of_bad_spellings_sets]
     return results
 
 

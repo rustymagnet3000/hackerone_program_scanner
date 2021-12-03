@@ -1,8 +1,11 @@
 import pytest
 from conf.base_logger import logger
+from h1_search import get_word_file, get_word_objects_to_search, search_h1_program_notes_for_misspellings, \
+    search_h1_web_data
 
 
 class TestH1SecSpellings:
+    words_dict = get_word_file()
     company_name = 'foobar'
     dummy_text = """ the quick brown
             fox foxx foxxx jumped over the very large
@@ -35,8 +38,18 @@ class TestH1SecSpellings:
         words_list = get_word_objects_to_search(words_dict)
         assert len(words_list) > 0 and isinstance(words_list, list)
 
-    def test__foxx_found_in_search(self):
+    def test_foxx_found_in_search(self):
         words_dict = get_word_file()
         word_objs = get_word_objects_to_search(words_dict)
         results = search_h1_program_notes_for_misspellings(self.company_name, self.dummy_text, word_objs)
         assert len(results) > 0 and isinstance(results, list)
+
+    def test_new_search_streamlined(self):
+        word_objs = get_word_objects_to_search(self.words_dict)
+        results = search_h1_program_notes_for_misspellings(self.company_name, self.dummy_text, word_objs)
+        assert True
+
+    def test_new_search_iterator(self):
+        misspelled_foxes = ['foxxx', 'foxx', 'foxxxx', 'fixx']
+        result = search_h1_web_data(misspelled_foxes, self.dummy_text)
+        assert True

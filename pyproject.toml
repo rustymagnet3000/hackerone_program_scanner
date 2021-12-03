@@ -8,9 +8,9 @@ authors = ["rustymagnet3000 <5367141+rustymagnet3000@users.noreply.github.com>"]
 python = "^3.9"
 requests = "^2.26.0"
 colorlog = "^6.6.0"
-requests-html = "^0.10.0"
 pytest = "^6.2.5"
 config = "^0.5.1"
+toml = "^0.10.2"
 
 [tool.poetry.dev-dependencies]
 
