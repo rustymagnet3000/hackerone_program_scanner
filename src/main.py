@@ -4,7 +4,7 @@ from conf.base_logger import logger
 from conf.config import api_get_programs_endpoint
 from h1_scrape import scrape_company
 from h1_open_company_file import read_company_file
-from h1_search import get_word_file, get_word_objects_to_search, search_h1_program_notes_for_misspellings
+from h1_search import get_word_file, get_words_to_search, search_h1_program_notes_for_misspellings
 
 
 def main():

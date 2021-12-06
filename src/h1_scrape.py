@@ -15,7 +15,7 @@ def build_h1_request(h1_company_name) -> Request:
     return Request(str(h1_web_endpoint + h1_company_name), headers=h1_required_http_headers())
 
 
-def scrape_company(company_name: str) -> :
+def scrape_company(company_name: str):
     logger.info(f"Scrape started for {company_name}")
     req = build_h1_request(company_name)
     with urlopen(req) as f:

@@ -1,7 +1,10 @@
 import pytest
 from conf.base_logger import logger
-from h1_search import get_word_file, get_word_objects_to_search, search_h1_program_notes_for_misspellings, \
-    search_h1_web_data
+from h1_search import get_word_file, \
+    search_h1_program_notes_for_misspellings, \
+    search_h1_web_data, SecurityWord, \
+    get_all_spellings_to_check, \
+    get_all_spellings
 
 
 class TestH1SecSpellings:
@@ -10,6 +13,7 @@ class TestH1SecSpellings:
     dummy_text = """ the quick brown
             fox foxx foxxx jumped over the very large
             brown log ..."""
+    bad_foxes = ['foxxx', 'foxx', 'foxxxx', 'fixx']
 
     def test_load_word_file(self):
         words = get_word_file()
@@ -31,21 +35,46 @@ class TestH1SecSpellings:
 
     def test_init_classes_from_file(self):
         """
-        Get the word file. Init a Class with the values.
-        :return:
+        Get the word file as a generator.  Unwrap generator as the file is small.
         """
         words_dict = get_word_file()
-        words_list = get_word_objects_to_search(words_dict)
-        assert len(words_list) > 0 and isinstance(words_list, list)
+        words_gen = get_all_spellings(words_dict)
+        assert len(list(words_gen)) > 0
+
+    def test_init_single_class(self):
+        fox_word = [SecurityWord('fox', self.bad_foxes)]
+        assert len(fox_word) == 1
+
+    def test_get_all_spellings_to_check(self):
+        fox_word = [SecurityWord('fox', self.bad_foxes)]
+        words_to_search = get_all_spellings_to_check(fox_word)
+        bad_spellings = list(words_to_search)
+        assert len(list(bad_spellings)) > 0
+
+    def test_conversion_to_check(self):
+        fox_word = [SecurityWord('fox', self.bad_foxes)]
+        words_to_search = get_all_spellings_to_check(fox_word)
+        bad_spellings = list(words_to_search)
+        assert len(list(bad_spellings)) > 0
+
+
+    def test_get_all_spellings_to_check_more_objects(self):
+        fox_word = [
+                        SecurityWord('fox', self.bad_foxes),
+                        SecurityWord('mouse', self.bad_foxes)
+        ]
+        words_to_search = get_all_spellings_to_check(fox_word)
+        bad_spellings = list(words_to_search)
+        assert len(list(bad_spellings)) > 0
 
     def test_foxx_found_in_search(self):
-        words_dict = get_word_file()
-        word_objs = get_word_objects_to_search(words_dict)
-        results = search_h1_program_notes_for_misspellings(self.company_name, self.dummy_text, word_objs)
+        fox_word = [SecurityWord('fox', self.bad_foxes)]
+        words_to_search = get_words_to_search()
+        results = search_h1_program_notes_for_misspellings(self.company_name, self.dummy_text, fox_word)
         assert len(results) > 0 and isinstance(results, list)
 
     def test_new_search_streamlined(self):
-        word_objs = get_word_objects_to_search(self.words_dict)
+        word_objs = get_words_to_search(self.words_dict)
         results = search_h1_program_notes_for_misspellings(self.company_name, self.dummy_text, word_objs)
         assert True
 

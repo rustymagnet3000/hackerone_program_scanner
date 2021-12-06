@@ -11,3 +11,5 @@
     patterns = ['resaerchers']
   [sec_words.suspicious]
     patterns = ['supicious']
+  [sec_words.prosecute]
+    patterns = ['persecute', 'prosecutee']
