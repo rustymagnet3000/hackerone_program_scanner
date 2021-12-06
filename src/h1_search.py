@@ -8,7 +8,7 @@ class SecurityWord(object):
     """
     def __init__(self, word: str, patterns: list):
         self.original_word = word.lower()
-        self.incorrect_spellings = frozenset(patterns)
+        self.incorrect_spellings = patterns
 
 
 def get_word_file(file_loc='../conf/words.toml') -> dict:
@@ -20,30 +20,24 @@ def get_word_file(file_loc='../conf/words.toml') -> dict:
     return words_dict
 
 
-def get_word_objects_to_search(words: dict) -> list:
+def get_all_spellings(words: dict):
     """
-    :param words: original dict of all words and misspellings
-    :return:list_word_objs that better enable tracking
+    :param words: original dict of all words and misspellings. Using Dict due to Toml Module
+    :return:generator of bad spellings
     """
-    list_word_objs = []
-    for word in words.get('sec_words').keys():
-        word_to_check = SecurityWord(word, words.get('sec_words').get(word).get('patterns'))
-        list_word_objs.append(word_to_check)
-    return list_word_objs
+    for word in words.get('sec_words'):
+        for bad_spellings in words.get('sec_words').get(word).get('patterns'):
+            yield bad_spellings
 
 
-def search_h1_program_notes_for_misspellings(company: str, h1_program_notes: str, sec_words: SecurityWord) -> dict:
+def search_h1_web_data(company_name, misspelled_words_lists: list, web_text):
     """
-    :param company: name of H1 Company being analyzed
-    :param h1_program_notes: scraped h1_program_notes
-    :param sec_words: objects to check
-    :return:
+    :param web_text: scraped h1_program_notes
+    :param misspelled_words_lists: For example: ['foxxx', 'foxx', 'foxxxx', 'fixx', 'foox', 'ffox']
+    :param company_name: name of H1 Company being analyzed
+    :return:generator of results
     """
-    results = []
-    for word in sec_words:
-        for misspelling in word.incorrect_spellings:
-            if re.search(misspelling, h1_program_notes):
-                results.append([company, misspelling])
-    return results
 
-
+    for spellings in misspelled_words_lists:
+        res = re.findall(r"(?=(" + '|'.join(spellings) + r"))", web_text)
+        yield company_name, res
