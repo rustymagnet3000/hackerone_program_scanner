@@ -1,9 +1,7 @@
-import pytest
 from conf.base_logger import logger
 from h1_search import get_word_file, \
-    search_h1_program_notes_for_misspellings, \
-    search_h1_web_data, SecurityWord, \
-    get_all_spellings_to_check, \
+    SecurityWord, \
+    search_h1_web_data, \
     get_all_spellings
 
 
@@ -12,8 +10,9 @@ class TestH1SecSpellings:
     company_name = 'foobar'
     dummy_text = """ the quick brown
             fox foxx foxxx jumped over the very large
-            brown log ..."""
-    bad_foxes = ['foxxx', 'foxx', 'foxxxx', 'fixx']
+            brown log ...to chase miice"""
+    bad_foxes = ['foxxx', 'foxx', 'foxxxx', 'fixx', 'foox', 'ffox']
+    bad_mice = ['miice', 'mic']
 
     def test_load_word_file(self):
         words = get_word_file()
@@ -33,52 +32,54 @@ class TestH1SecSpellings:
         words = get_word_file()
         assert len(words.get('sec_words')) > 0
 
-    def test_init_classes_from_file(self):
-        """
-        Get the word file as a generator.  Unwrap generator as the file is small.
-        """
-        words_dict = get_word_file()
-        words_gen = get_all_spellings(words_dict)
-        assert len(list(words_gen)) > 0
-
     def test_init_single_class(self):
         fox_word = [SecurityWord('fox', self.bad_foxes)]
         assert len(fox_word) == 1
 
-    def test_get_all_spellings_to_check(self):
-        fox_word = [SecurityWord('fox', self.bad_foxes)]
-        words_to_search = get_all_spellings_to_check(fox_word)
-        bad_spellings = list(words_to_search)
-        assert len(list(bad_spellings)) > 0
+    def test_get_all_bad_spellings(self):
+        """
+        Get all Bad Spellings as a Generator
+        """
+        words_gen = get_all_spellings(self.words_dict)
+        assert len(list(words_gen)) > 0
 
-    def test_conversion_to_check(self):
-        fox_word = [SecurityWord('fox', self.bad_foxes)]
-        words_to_search = get_all_spellings_to_check(fox_word)
-        bad_spellings = list(words_to_search)
-        assert len(list(bad_spellings)) > 0
+    def test_get_fox_misspellings_single(self):
+        fox_dict = {'sec_words': {'fox': {'patterns': [self.bad_foxes]}}}
+        words_to_search = get_all_spellings(fox_dict)
+        bad_foxes = list(words_to_search)
+        assert len(list(bad_foxes)) > 0
 
+    def test_get_animals_misspellings_single(self):
+        fox_dict = {'sec_words':
+            {
+                'fox': {'patterns': [self.bad_foxes]},
+                'mice': {'patterns': [self.bad_mice]}
+            }
+        }
+        words_to_search = get_all_spellings(fox_dict)
+        bad_animals = list(words_to_search)
+        assert len(list(bad_animals)) > 0
 
-    def test_get_all_spellings_to_check_more_objects(self):
-        fox_word = [
-                        SecurityWord('fox', self.bad_foxes),
-                        SecurityWord('mouse', self.bad_foxes)
-        ]
-        words_to_search = get_all_spellings_to_check(fox_word)
-        bad_spellings = list(words_to_search)
-        assert len(list(bad_spellings)) > 0
-
-    def test_foxx_found_in_search(self):
-        fox_word = [SecurityWord('fox', self.bad_foxes)]
-        words_to_search = get_words_to_search()
-        results = search_h1_program_notes_for_misspellings(self.company_name, self.dummy_text, fox_word)
+    def test_bad_foxes_found_in_search(self):
+        fox_dict = {'sec_words': {'fox': {'patterns': [self.bad_foxes]}}}
+        words_to_search = get_all_spellings(fox_dict)
+        results_gen = search_h1_web_data(self.company_name, words_to_search, self.dummy_text)
+        results = list(results_gen)
         assert len(results) > 0 and isinstance(results, list)
 
-    def test_new_search_streamlined(self):
-        word_objs = get_words_to_search(self.words_dict)
-        results = search_h1_program_notes_for_misspellings(self.company_name, self.dummy_text, word_objs)
-        assert True
+    def test_bad_animals_found_in_search(self):
+        fox_dict = {
+                        'sec_words':
+                        {
+                            'fox': {'patterns': [self.bad_foxes]},
+                            'mice': {'patterns': [self.bad_mice]}
+                        }
+                   }
 
-    def test_new_search_iterator(self):
-        misspelled_foxes = ['foxxx', 'foxx', 'foxxxx', 'fixx']
-        result = search_h1_web_data(misspelled_foxes, self.dummy_text)
-        assert True
+        words_to_search = get_all_spellings(fox_dict)
+        results_gen = search_h1_web_data(self.company_name, words_to_search, self.dummy_text)
+        results = list(results_gen)
+        for result in results:
+            print(result)
+        assert len(results) > 0 and isinstance(results, list)
+
