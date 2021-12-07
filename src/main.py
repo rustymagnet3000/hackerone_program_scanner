@@ -5,6 +5,7 @@ from conf.config import api_get_programs_endpoint
 from h1_scrape import scrape_company
 from h1_open_company_file import read_company_file
 from h1_search import get_word_file, get_all_spellings, search_h1_web_data
+import sys
 
 
 def print_gen(results_gen):
@@ -19,11 +20,11 @@ def prime_time_scrape(company_name, words_g):
 
 def main():
     h1_creds = check_h1_credentials_exist()
-
+    if h1_creds is None:
+        sys(exit())
     # Todo: Menu options to get H1 program info OR read data from local file
     # programs = get_h1_programs(username=h1_creds.username,
     #                            token=h1_creds.access_token,
-    #                            endpoint=api_get_programs_endpoint,
     #                            h1_programs=[])
     # write_results_to_file(programs)
     words_gen = get_all_spellings(get_word_file())

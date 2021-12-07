@@ -29,7 +29,7 @@ After trial and error, it was clear that HackerOne was checking the request was 
 ```
 ### Add words
 
-Add words to `/conf/words.toml`.
+To expand the spelling mistakes to check for, add them to: `/conf/words.toml`.
 
 ```
 git update-index --assume-unchanged conf/words.toml

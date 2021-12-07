@@ -7,7 +7,7 @@ from conf.config import (
 from urllib.request import urlopen, Request
 
 
-class Test:
+class TestWebRequests:
 
     company_name = 'coinbase'
 

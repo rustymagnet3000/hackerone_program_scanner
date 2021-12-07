@@ -1,5 +1,5 @@
 import requests
-from conf.config import H1Program, filename
+from conf.config import H1Program, filename, api_get_programs_endpoint
 import csv
 from conf.base_logger import logger
 
@@ -17,21 +17,21 @@ def write_results_to_file(results: list):
     return None
 
 
-def get_h1_programs(username,
-                    token,
-                    endpoint: str,
-                    h1_programs: list
-                    ):
+def send_request(username, token):
     headers = {
         'Accept': 'application/json'
     }
 
-    resp = requests.get(
-        url=endpoint,
+    return requests.get(
+        url=api_get_programs_endpoint,
         auth=(username, token),
         headers=headers
     )
 
+
+def get_h1_programs(username, token):
+
+    resp = send_request(username, token)
     # check if page paginates. If so make a recursive call
     links = resp.json().get('links', {})
     next_url = links.get('next', None)
