@@ -30,14 +30,12 @@ def get_all_spellings(words: dict):
             yield bad_spellings
 
 
-def search_h1_web_data(company_name, misspelled_words_lists: list, web_text):
+def search_h1_web_data(company_name, misspelled_words_lists, web_text):
     """
     :param web_text: scraped h1_program_notes
-    :param misspelled_words_lists: For example: ['foxxx', 'foxx', 'foxxxx', 'fixx', 'foox', 'ffox']
+    :param misspelled_words_lists: For example: [['foxxx', 'foxx'],['miice']]
     :param company_name: name of H1 Company being analyzed
     :return:generator of results
     """
-
     for spellings in misspelled_words_lists:
-        res = re.findall(r"(?=(" + '|'.join(spellings) + r"))", web_text)
-        yield company_name, res
+        yield [(company_name, s) for s in spellings if re.match(s, web_text, flags=re.I | re.A)]

@@ -1,5 +1,5 @@
 import pytest
-from h1_scrape import h1_required_http_headers
+from h1_scrape import h1_required_http_headers, scrape_company
 from conf.config import (
     h1_dummy_local_endpoint,
     h1_web_endpoint
@@ -9,16 +9,14 @@ from urllib.request import urlopen, Request
 
 class Test:
 
-    @pytest.fixture
-    def h1_program_path(self):
-        return 'coinbase'
+    company_name = 'coinbase'
 
     @pytest.fixture
-    def urllib_h1_request(self, http_headers, h1_program_path):
-        return Request(str(h1_web_endpoint + h1_program_path), headers=h1_required_http_headers)
+    def urllib_h1_request(self):
+        return Request(str(h1_web_endpoint + self.company_name), headers=h1_required_http_headers())
 
-    def test_local_html_scrape(self, http_headers):
-        req = Request(h1_dummy_local_endpoint, headers=http_headers)
+    def test_local_html_scrape(self):
+        req = Request(h1_dummy_local_endpoint, headers=h1_required_http_headers())
         _content = urlopen(req).read()
         assert isinstance(_content, bytes)
 
@@ -29,3 +27,7 @@ class Test:
     def test_h1_scrape_response_code(self, urllib_h1_request):
         with urlopen(urllib_h1_request) as f:
             assert f.status == 200
+
+    def test_coinbase_returned_web_data(self, urllib_h1_request):
+        res = scrape_company(self.company_name)
+        print(res)

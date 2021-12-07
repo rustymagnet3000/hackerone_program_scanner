@@ -4,7 +4,7 @@ from conf.base_logger import logger
 from conf.config import api_get_programs_endpoint
 from h1_scrape import scrape_company
 from h1_open_company_file import read_company_file
-from h1_search import get_word_file, get_words_to_search, search_h1_program_notes_for_misspellings
+from h1_search import get_word_file, get_all_spellings, search_h1_web_data
 
 
 def main():
@@ -22,6 +22,8 @@ def main():
     company_name = 'coinbase'
     web_data = scrape_company(company_name)
     words_dict = get_word_file()
-    word_objs = get_word_objects_to_search(words_dict)
-    results = search_h1_program_notes_for_misspellings(company_name, web_data, word_objs)
-    logger.info(f"Final results:\n\t{results}")
+    words_gen = get_all_spellings(words_dict)
+    results = search_h1_web_data(company_name, words_gen, web_data)
+    logger.info(f"Results:")
+    for r in results:
+        logger.info(f"\t{r}")
