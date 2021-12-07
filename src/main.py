@@ -7,6 +7,16 @@ from h1_open_company_file import read_company_file
 from h1_search import get_word_file, get_all_spellings, search_h1_web_data
 
 
+def print_gen(results_gen):
+    return [r for r in results_gen if len(r) > 0]
+
+
+def prime_time_scrape(company_name, words_g):
+    web_data = scrape_company(company_name)
+    res_gen = search_h1_web_data(company_name, words_g, web_data)
+    print(print_gen(res_gen))
+
+
 def main():
     h1_creds = check_h1_credentials_exist()
 
@@ -16,14 +26,6 @@ def main():
     #                            endpoint=api_get_programs_endpoint,
     #                            h1_programs=[])
     # write_results_to_file(programs)
-
-    # targeted_h1_companies = read_company_file()
-    # for t in targeted_h1_companies:
-    company_name = 'coinbase'
-    web_data = scrape_company(company_name)
-    words_dict = get_word_file()
-    words_gen = get_all_spellings(words_dict)
-    results = search_h1_web_data(company_name, words_gen, web_data)
-    logger.info(f"Results:")
-    for r in results:
-        logger.info(f"\t{r}")
+    words_gen = get_all_spellings(get_word_file())
+    for c in read_company_file():
+        prime_time_scrape(c.name, words_gen)

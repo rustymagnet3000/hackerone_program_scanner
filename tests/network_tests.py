@@ -30,4 +30,4 @@ class Test:
 
     def test_coinbase_returned_web_data(self, urllib_h1_request):
         res = scrape_company(self.company_name)
-        print(res)
+        assert isinstance(res, str)

@@ -5,6 +5,10 @@ from h1_search import get_word_file, \
     get_all_spellings
 
 
+def print_gen(results_gen):
+    return [r for r in results_gen if len(r) > 0]
+
+
 class TestH1SecSpellings:
     words_dict = get_word_file()
     company_name = 'foobar'
@@ -29,18 +33,18 @@ class TestH1SecSpellings:
             assert False
 
     def test_words_loaded_correctly(self):
-        words = get_word_file()
-        assert len(words.get('sec_words')) > 0
+        assert len(self.words_dict.get('sec_words')) > 0
 
     def test_init_single_class(self):
         fox_word = [SecurityWord('fox', self.bad_foxes)]
         assert len(fox_word) == 1
 
+    # Print all words listed in toml file
     def test_get_all_bad_spellings(self):
-        """
-        Get all Bad Spellings as a Generator
-        """
+        from pprint import pprint
+
         words_gen = get_all_spellings(self.words_dict)
+        pprint(print_gen(words_gen))
         assert True
 
     def test_get_fox_misspellings_single(self):
@@ -79,9 +83,6 @@ class TestH1SecSpellings:
         words_to_search = get_all_spellings(fox_dict)
         results_gen = search_h1_web_data(self.company_name, words_to_search, self.dummy_text)
         results = list(results_gen)
-        for result in results:
-            print(result)
-        assert len(results) > 0 and isinstance(results, list)
-
-
-
+        if len(results) == 0 and isinstance(results, list):
+            logger.info(f"No findings to report for {self.company_name}")
+            assert True

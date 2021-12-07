@@ -1,8 +1,10 @@
 from conf.base_logger import logger
+from h1_open_company_file import read_company_file
 from h1_scrape import scrape_company
 from h1_search import get_word_file, \
     search_h1_web_data, \
     get_all_spellings
+from main import prime_time_scrape
 
 
 def debug_gen(results_gen):
@@ -38,10 +40,21 @@ class TestH1ScrapeFlow:
         results_gen = search_h1_web_data(self.company_name, words_gen, web_data)
         res = debug_gen(results_gen)
         if len(res) == 0 and isinstance(res, list):
-            logger.info(f"No findings to report for {self.company_name}")
+            logger.info(f"No findings: {self.company_name}")
             assert True
         elif isinstance(res, list):
-            logger.info(f"Found something: {self.company_name}\n\t{res}")
+            logger.info(f"{self.company_name} found:\n\t{res}")
             assert True
         else:
             assert False
+
+    def test_read_and_print_all_company_names_from_local_file(self):
+        targeted_h1_companies = read_company_file()
+        for comp in targeted_h1_companies:
+            logger.debug(f"{comp.name.ljust(25, ' ')}{comp.id.rjust(10, ' ')},")
+
+    def test_check_25_firms(self):
+        words_gen = get_all_spellings(get_word_file())
+        for c in read_company_file():
+            prime_time_scrape(c.name, words_gen)
+
