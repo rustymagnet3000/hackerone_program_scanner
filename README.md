@@ -27,6 +27,14 @@ After trial and error, it was clear that HackerOne was checking the request was 
 ```
     'X-Requested-With': 'XMLHttpRequest'
 ```
+### Add words
+
+Add words to `/conf/words.toml`.
+
+```
+git update-index --assume-unchanged conf/words.toml
+```
+
 ### Usage
 
 ```zsh
