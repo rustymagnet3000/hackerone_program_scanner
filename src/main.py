@@ -22,11 +22,12 @@ def main():
     h1_creds = check_h1_credentials_exist()
     if h1_creds is None:
         sys(exit())
-    # Todo: Menu options to get H1 program info OR read data from local file
-    # programs = get_h1_programs(username=h1_creds.username,
-    #                            token=h1_creds.access_token,
-    #                            h1_programs=[])
-    # write_results_to_file(programs)
-    words_gen = get_all_spellings(get_word_file())
-    for c in read_company_file():
-        prime_time_scrape(c.name, words_gen)
+    # Todo: Menu options to get H1 program info to write local file
+    programs = get_h1_programs(username=h1_creds.username,
+                               token=h1_creds.access_token)
+    write_results_to_file(programs)
+
+    # Todo: Menu options for scraping web after read of local file
+    # words_gen = get_all_spellings(get_word_file())
+    # for c in read_company_file():
+    #     prime_time_scrape(c.name, words_gen)
