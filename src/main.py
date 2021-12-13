@@ -1,3 +1,4 @@
+from urllib import error
 from h1_creds import check_h1_credentials_exist
 from h1_info import get_h1_programs, write_results_to_file
 from conf.base_logger import logger
@@ -13,9 +14,14 @@ def print_gen(results_gen):
 
 
 def prime_time_scrape(company_name, words_g):
-    web_data = scrape_company(company_name)
-    res_gen = search_h1_web_data(company_name, words_g, web_data)
-    print(print_gen(res_gen))
+    try:
+        web_data = scrape_company(company_name)
+        res_gen = search_h1_web_data(company_name, words_g, web_data)
+        print(print_gen(res_gen))
+    except error.HTTPError:
+        logger.debug(f"HTTPError when scraping {company_name}")
+    finally:
+        pass
 
 
 def main():

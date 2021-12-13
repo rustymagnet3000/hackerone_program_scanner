@@ -34,6 +34,18 @@ class TestH1ScrapeFlow:
         res = debug_gen(results_gen)
         assert len(res) == 0 and isinstance(res, list)
 
+    # The H1 sometimes return Company Names like "Yahoo!" or "Cloudflare Vulnerability Disclosure"
+    # Even when regex applies, you can encounter HTTP404s
+    def test_scrape_bad_company_name(self):
+        import urllib
+        try:
+            scrape_company("cloudflarevulnerabilitydisclosure")
+            assert False
+        except urllib.error.HTTPError:
+            assert True
+        finally:
+            pass
+
     def test_scrape_coinbase_against_known_word(self):
         web_data = scrape_company(self.company_name)
         words_gen = get_all_spellings(self.words_dict)
