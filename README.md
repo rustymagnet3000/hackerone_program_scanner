@@ -35,10 +35,10 @@ To expand the spelling mistakes to check for, add them to: `/conf/words.toml`.
 git update-index --assume-unchanged conf/words.toml
 ```
 
-### Usage
+### Test
 
 ```zsh
-python3 src/
+poetry run pytest -xvs tests/
 ```
 
 ### Overview

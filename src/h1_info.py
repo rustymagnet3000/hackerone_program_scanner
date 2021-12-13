@@ -12,16 +12,11 @@ def write_results_to_file(results: list):
     if len(results) == 0 or results is None:
         logger.warning(f"No results found.")
         return False
-    elif results is None:
-        logger.warning(f"Sent an empty / None results list")
-        return False
 
     with open(filename, 'w', newline='') as result_file:  # overwrites any results that exist in the file
         csv_out = csv.writer(result_file)
         csv_out.writerow(['id', 'name', 'offers_bounties', 'triage_active'])
         for r in results:
-            if r.name is None:
-                logger.debug(f"Didn't write ")
             csv_out.writerow(r)
     return True
 

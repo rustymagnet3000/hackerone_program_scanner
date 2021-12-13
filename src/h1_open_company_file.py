@@ -3,25 +3,42 @@ from conf.config import H1Program, filename, h1_web_endpoint
 from csv import reader
 
 
-def open_file_of_companies() -> list:
-    logger.info(f"Opening Companies file")
-    results = []
-    with open(filename, 'r', newline='') as result_file_csv:
-        csv_reader = reader(result_file_csv)
-        for company in map(H1Program._make, csv_reader):
-            results.append(company)
-    return results
-
-
-def read_company_file() -> list:
+def open_file_of_companies():
     """
-    Filters a local file of companies using Hackerone. Filters on those who offer Bounties and are not Triaged by H1
+    Open local file that includes Hackerone:  id,name,offers_bounties,triage_active
     :return: list
     """
-    comps_file = open_file_of_companies()
-    if comps_file is None:
+    logger.info(f"Attempting to open {filename}")
+    with open(filename, 'r', newline='') as result_file_csv:
+        csv_reader = reader(result_file_csv)
+        next(csv_reader)    # skip first row as it is Column Headers
+        return [company for company in map(H1Program._make, csv_reader)]
+
+
+def tidy(h1: H1Program):
+    """
+    Dormant filter use to focus search on H1 Companies who are not H1 Triaged and Pay Rewards
+    :return: Bool
+    """
+    if h1.offers_bounties == 'False' or h1.offers_bounties == '':
+        return False
+    if h1.triage_active == 'True':
+        return False
+    return True
+
+
+def filter_company_file():
+    """
+    Filters local file of companies into List of NamedTuples.
+    Filters on those who offer Bounties and are not Triaged by H1
+    :return: list
+    """
+    companies = open_file_of_companies()
+    if companies is None or len(companies) is 0:
         logger.warning(f"Error reading report")
-    filtered = filter(lambda c: c.offers_bounties == 'True' and c.triage_active == '', comps_file)
-    logger.info("Finished reading Company File")
-    return list(filtered)
+        return None
+    # commented out filter as barely any companies meet the criteria
+    # filtered_list = list(filter(tidy, companies))
+    logger.info(f"Finished reading Company File. Found {len(companies)}")
+    return companies
 
