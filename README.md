@@ -10,6 +10,14 @@ GET https://api.hackerone.com/v1/hackers/programs
 
 The API does not reveal info about `Private` programs.
 
+### Overview
+
+```
+| --------------- |      | -------------- |       | -------------- |
+| 1. Get H1 info  | -->  | 2. Scrape data |  -->  | 3. Check words | 
+| --------------- |      | -------------- |       | -------------- |
+```
+
 ### Scraping
 
 There was no API to get the contents of a companies HackerOne program.  This meant a scraping approach.
@@ -29,23 +37,17 @@ After trial and error, it was clear that HackerOne was checking the request was 
 ```
 ### Add words
 
-Add words to `/conf/words.toml`.
+To expand the spelling mistakes to check for, add them to: `/conf/words.toml`.
 
-```
-git update-index --assume-unchanged conf/words.toml
-```
-
-### Usage
+### Test
 
 ```zsh
-python3 src/
+poetry run pytest -xvs tests/
 ```
 
-### Overview
+### References
 
 ```
-| --------------- |      | -------------- |       | -------------- |
-| 1. Get H1 info  | -->  | 2. Scrape data |  -->  | 3. Check words | 
-| --------------- |      | -------------- |       | -------------- |
+https://www.dcs.bbk.ac.uk/~roger/missp.dat
+https://en.wikipedia.org/wiki/Commonly_misspelled_English_words
 ```
-

@@ -40,12 +40,26 @@ class TestH1SecSpellings:
         assert len(fox_word) == 1
 
     # Print all words listed in toml file
+    def test_get_count_bad_spellings(self):
+        from pprint import pprint
+        words_gen = get_all_spellings(self.words_dict)
+        logger.info(f"{len(list(words_gen))}")
+        assert True
+
+    # Print all words listed in toml file
     def test_get_all_bad_spellings(self):
         from pprint import pprint
-
         words_gen = get_all_spellings(self.words_dict)
         pprint(print_gen(words_gen))
         assert True
+
+    def test_check_for_duplicates(self):
+        import collections
+        words_gen = get_all_spellings(self.words_dict)
+        duplicates = ([item for item, count in collections.Counter(words_gen).items() if count > 1])
+        if len(duplicates) > 0:
+            logger.warning(f"Found duplicates values: {duplicates}")
+            assert False
 
     def test_get_fox_misspellings_single(self):
         fox_dict = {'sec_words': {'fox': {'patterns': [self.bad_foxes]}}}
@@ -79,7 +93,6 @@ class TestH1SecSpellings:
                             'mice': {'patterns': [self.bad_mice]}
                         }
                    }
-
         words_to_search = get_all_spellings(fox_dict)
         results_gen = search_h1_web_data(self.company_name, words_to_search, self.dummy_text)
         results = list(results_gen)

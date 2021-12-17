@@ -1,5 +1,6 @@
 import toml
 import re
+from conf.base_logger import logger
 
 
 class SecurityWord(object):
@@ -28,14 +29,16 @@ def get_all_spellings(words: dict):
     for word in words.get('sec_words'):
         for bad_spellings in words.get('sec_words').get(word).get('patterns'):
             yield bad_spellings
+    logger.info(f"Retrieved all incorrect spellings")
 
 
-def search_h1_web_data(company_name, misspelled_words_lists, web_text):
+def search_h1_web_data(company_name, misspelled_words_list, web_text):
     """
     :param web_text: scraped h1_program_notes
-    :param misspelled_words_lists: For example: [['foxxx', 'foxx'],['miice']]
+    :param misspelled_words_list: For example: [['foxxx', 'foxx'],['miice']]
     :param company_name: name of H1 Company being analyzed
     :return:generator of results
     """
-    for spellings in misspelled_words_lists:
-        yield [(company_name, s) for s in spellings if re.match(s, web_text, flags=re.I | re.A)]
+    logger.debug(f"Checking {company_name}")
+    return [(company_name, s) for s in misspelled_words_list if re.search(s, web_text, flags=re.I | re.A)]
+

@@ -1,5 +1,5 @@
 import os
-import sys
+
 from conf.base_logger import logger
 from typing import NamedTuple
 
@@ -22,8 +22,8 @@ def check_h1_credentials_exist() -> H1creds:
 
     creds = H1creds(os.getenv('H1_USERNAME'), os.getenv('H1_API_TOKEN'))
     if creds.access_token is None or creds.username is None:
-        logger.warning(f"Set the HackerOne env variables")
-        sys.exit()
+        logger.warning(f"Please set the HackerOne env variables")
+        return None
 
     logger.info(f"Found HackerOne Credentials")
     return creds
