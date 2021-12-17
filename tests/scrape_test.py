@@ -1,5 +1,5 @@
 from conf.base_logger import logger
-from h1_open_company_file import filter_company_file, open_file_of_companies
+from h1_company_file import filter_company_file, open_file_of_companies
 from h1_scrape import scrape_company
 from h1_search import get_word_file, \
     search_h1_web_data, \
@@ -9,6 +9,11 @@ from main import prime_time_scrape
 
 def debug_gen(results_gen):
     return [r for r in results_gen if len(r) > 0]
+
+
+def get_good_spellings():
+    for good_word in ['vulnerability', 'reward', 'policy', 'Coinbase', 'libraries']:
+        yield good_word
 
 
 class TestH1ScrapeFlow:
@@ -71,7 +76,7 @@ class TestH1ScrapeFlow:
         else:
             assert False
 
-    def test_check_25_firms(self):
+    def test_known_words_that_should_be_reported(self):
         words_gen = get_all_spellings(get_word_file())
-        for c in filter_company_file():
-            prime_time_scrape(c.name, words_gen)
+        good_word_gen = get_good_spellings()
+        prime_time_scrape(self.company_name, good_word_gen)

@@ -4,7 +4,7 @@ from h1_info import get_h1_programs, write_results_to_file
 from conf.base_logger import logger
 from conf.config import api_get_programs_endpoint
 from h1_scrape import scrape_company
-from h1_open_company_file import filter_company_file
+from h1_company_file import filter_company_file
 from h1_search import get_word_file, get_all_spellings, search_h1_web_data
 import sys
 
@@ -20,7 +20,7 @@ def prime_time_scrape(company_name, words_g):
         if res_gen:
             print(print_gen(res_gen))
     except error.HTTPError:
-        logger.debug(f"HTTPError when scraping {company_name}")
+        logger.warning(f"HTTPError when scraping {company_name}")
     finally:
         pass
 
@@ -35,7 +35,6 @@ def main():
     # programs = get_h1_programs(username=h1_creds.username,
     #                            token=h1_creds.access_token,
     #                            next_url=api_get_programs_endpoint)
-
 
     # Todo: Menu options for scraping web after read of local file
     words_gen = get_all_spellings(get_word_file())

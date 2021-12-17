@@ -49,3 +49,9 @@ poetry run pytest -xvs tests/
 | --------------- |      | -------------- |       | -------------- |
 ```
 
+### References
+
+```
+https://www.dcs.bbk.ac.uk/~roger/missp.dat
+https://en.wikipedia.org/wiki/Commonly_misspelled_English_words
+```

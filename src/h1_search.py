@@ -32,13 +32,16 @@ def get_all_spellings(words: dict):
     logger.info(f"Retrieved all incorrect spellings")
 
 
-def search_h1_web_data(company_name, misspelled_words_lists, web_text):
+def search_h1_web_data(company_name, misspelled_words_list, web_text):
     """
     :param web_text: scraped h1_program_notes
-    :param misspelled_words_lists: For example: [['foxxx', 'foxx'],['miice']]
+    :param misspelled_words_list: For example: [['foxxx', 'foxx'],['miice']]
     :param company_name: name of H1 Company being analyzed
     :return:generator of results
     """
-    for spellings in misspelled_words_lists:
-        yield [(company_name, s) for s in spellings if re.match(s, web_text, flags=re.I | re.A)]
+    for word in misspelled_words_list:
+        if re.search(word, web_text, flags=re.I | re.A):
+            print(f"hit! {word}")
+
+#    yield [(company_name, s) for s in misspelled_words_lists if re.match(s, web_text, flags=re.I | re.A)]
     logger.debug(f"Checked all spellings against {company_name}")
