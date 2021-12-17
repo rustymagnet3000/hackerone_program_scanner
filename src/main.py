@@ -33,8 +33,9 @@ def main():
 
     # Todo: Menu options to get H1 program info to write local file
     # programs = get_h1_programs(username=h1_creds.username,
-    #                            token=h1_creds.access_token)
-    # write_results_to_file(programs)
+    #                            token=h1_creds.access_token,
+    #                            next_url=api_get_programs_endpoint)
+
 
     # Todo: Menu options for scraping web after read of local file
     words_gen = get_all_spellings(get_word_file())

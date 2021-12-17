@@ -43,6 +43,8 @@ class TestH1SecSpellings:
     def test_get_all_bad_spellings(self):
         from pprint import pprint
         words_gen = get_all_spellings(self.words_dict)
+        words = list(words_gen)
+        logger.info(f"{len(words)}")
         pprint(print_gen(words_gen))
         assert True
 
