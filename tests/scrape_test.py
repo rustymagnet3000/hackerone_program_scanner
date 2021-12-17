@@ -79,4 +79,5 @@ class TestH1ScrapeFlow:
     def test_known_words_that_should_be_reported(self):
         words_gen = get_all_spellings(get_word_file())
         good_word_gen = get_good_spellings()
-        prime_time_scrape(self.company_name, good_word_gen)
+        res = prime_time_scrape(self.company_name, good_word_gen)
+        assert len(res) > 0

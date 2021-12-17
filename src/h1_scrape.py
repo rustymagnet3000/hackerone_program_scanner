@@ -20,7 +20,7 @@ def scrape_company(company_name: str):
     :param company_name:used to build the request URL
     :return: long string with all content from website or Throws Exception if bad HTTP request ( Http 404 )
     """
-    logger.info(f"{company_name}\tscrape started")
+    logger.debug(f"{company_name}\tscrape started")
     req = build_h1_request(company_name)
     with urlopen(req) as f:
         return f.read().decode('utf-8')

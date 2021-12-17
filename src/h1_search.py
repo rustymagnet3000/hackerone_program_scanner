@@ -39,9 +39,6 @@ def search_h1_web_data(company_name, misspelled_words_list, web_text):
     :param company_name: name of H1 Company being analyzed
     :return:generator of results
     """
-    for word in misspelled_words_list:
-        if re.search(word, web_text, flags=re.I | re.A):
-            print(f"hit! {word}")
+    logger.debug(f"Checking {company_name}")
+    return [(company_name, s) for s in misspelled_words_list if re.search(s, web_text, flags=re.I | re.A)]
 
-#    yield [(company_name, s) for s in misspelled_words_lists if re.match(s, web_text, flags=re.I | re.A)]
-    logger.debug(f"Checked all spellings against {company_name}")

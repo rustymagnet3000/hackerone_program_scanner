@@ -39,6 +39,6 @@ def filter_company_file():
         return None
     # commented out filter as barely any companies meet the criteria
     # filtered_list = list(filter(tidy, companies))
-    logger.info(f"Finished reading Company File. Found {len(companies)}")
+    logger.debug(f"Finished reading Company File. Found {len(companies)} companies")
     return companies
 
