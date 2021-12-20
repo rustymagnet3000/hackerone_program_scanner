@@ -10,6 +10,15 @@ GET https://api.hackerone.com/v1/hackers/programs
 
 The API does not reveal info about `Private` programs.
 
+
+```bash
+# poetry ( inside of /src folder )
+poetry run h1-script
+
+# python3
+python3 src/__main__.py
+```
+
 ### Overview
 
 ```

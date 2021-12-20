@@ -1,8 +1,15 @@
 [tool.poetry]
 name = "hackerone_program_scanner"
 version = "0.1.0"
-description = "Scan through H1 Program for errors in program notes"
+description = "Scan H1 Program for errors in program notes"
 authors = ["rustymagnet3000 <5367141+rustymagnet3000@users.noreply.github.com>"]
+packages = [
+    { include = "src" },
+]
+
+[tool.poetry.scripts]
+h1-script = "src.main:main"
+
 
 [tool.poetry.dependencies]
 python = "^3.9"
