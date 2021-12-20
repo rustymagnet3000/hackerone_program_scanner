@@ -1,7 +1,7 @@
 from conf.base_logger import logger
 from urllib import error
 from h1_creds import check_h1_credentials_exist
-from h1_info import get_h1_programs, write_results_to_file
+from h1_info import get_h1_programs, write_results_to_file, clean_companies_file
 from conf.config import api_get_programs_endpoint
 from h1_scrape import scrape_company
 from h1_company_file import filter_company_file
@@ -20,21 +20,21 @@ def prime_time_scrape(company_name, list_words):
 
 
 def main():
-    # Todo: Make this still invisible
-    logger.info("Starting")
     h1_creds = check_h1_credentials_exist()
     if h1_creds is None:
         sys(exit())
 
     # Todo: Menu options to get H1 program info to write local file
-    # programs = get_h1_programs(username=h1_creds.username,
-    #                            token=h1_creds.access_token,
-    #                            next_url=api_get_programs_endpoint)
-
+    clean_companies_file()
+    result = get_h1_programs(username=h1_creds.username,
+                             token=h1_creds.access_token,
+                             next_url=api_get_programs_endpoint)
+    assert result is True
     # Todo: Menu options for scraping web after read of local file
-    words_list = get_all_spellings(get_word_file())
-    for c in filter_company_file():
-        res = prime_time_scrape(c.name, words_list)
-        if res is not None and len(res) > 0:
-            print(res)
-    logger.info("Ending")
+    # words_list = get_all_spellings(get_word_file())
+    # for c in filter_company_file():
+    #     res = prime_time_scrape(c.name, words_list)
+    #     if res is not None and len(res) > 0:
+    #         print(res)
+
+
