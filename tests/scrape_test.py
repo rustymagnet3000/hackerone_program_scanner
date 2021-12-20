@@ -7,15 +7,6 @@ from h1_search import get_word_file, \
 from main import prime_time_scrape
 
 
-def debug_gen(results_gen):
-    return [r for r in results_gen if len(r) > 0]
-
-
-def get_good_spellings():
-    for good_word in ['vulnerability', 'reward', 'policy', 'Coinbase', 'libraries']:
-        yield good_word
-
-
 class TestH1ScrapeFlow:
     words_dict = get_word_file()
     company_name = 'coinbase'
@@ -65,8 +56,7 @@ class TestH1ScrapeFlow:
     def test_scrape_coinbase_against_known_word(self):
         web_data = scrape_company(self.company_name)
         words_gen = get_all_spellings(self.words_dict)
-        results_gen = search_h1_web_data(self.company_name, words_gen, web_data)
-        res = debug_gen(results_gen)
+        res = search_h1_web_data(self.company_name, words_gen, web_data)
         if len(res) == 0 and isinstance(res, list):
             logger.info(f"No findings: {self.company_name}")
             assert True
@@ -77,7 +67,8 @@ class TestH1ScrapeFlow:
             assert False
 
     def test_known_words_that_should_be_reported(self):
-        words_gen = get_all_spellings(get_word_file())
-        good_word_gen = get_good_spellings()
-        res = prime_time_scrape(self.company_name, good_word_gen)
+        words_list = get_all_spellings(get_word_file())
+        res = prime_time_scrape(self.company_name, words_list)
+        logger.info(f"{res}")
         assert len(res) > 0
+
