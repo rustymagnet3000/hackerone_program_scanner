@@ -5,10 +5,6 @@ from h1_search import get_word_file, \
     get_all_spellings
 
 
-def print_gen(results_gen):
-    return [r for r in results_gen if len(r) > 0]
-
-
 class TestH1SecSpellings:
     words_dict = get_word_file()
     company_name = 'foobar'
@@ -49,8 +45,8 @@ class TestH1SecSpellings:
     # Print all words listed in toml file
     def test_get_all_bad_spellings(self):
         from pprint import pprint
-        words_gen = get_all_spellings(self.words_dict)
-        pprint(print_gen(words_gen))
+        words_list = get_all_spellings(self.words_dict)
+        pprint(words_list)
         assert True
 
     def test_check_for_duplicates(self):
@@ -64,8 +60,7 @@ class TestH1SecSpellings:
     def test_get_fox_misspellings_single(self):
         fox_dict = {'sec_words': {'fox': {'patterns': [self.bad_foxes]}}}
         words_to_search = get_all_spellings(fox_dict)
-        bad_foxes = list(words_to_search)
-        assert len(list(bad_foxes)) > 0
+        assert len(words_to_search) > 0
 
     def test_get_animals_misspellings_single(self):
         fox_dict = {
@@ -75,8 +70,7 @@ class TestH1SecSpellings:
                         }
                    }
         words_to_search = get_all_spellings(fox_dict)
-        bad_animals = list(words_to_search)
-        assert len(list(bad_animals)) > 0
+        assert len(words_to_search) > 0
 
     def test_bad_foxes_found_in_search(self):
         fox_dict = {'sec_words': {'fox': {'patterns': [self.bad_foxes]}}}

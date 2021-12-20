@@ -24,12 +24,9 @@ def get_word_file(file_loc='../conf/words.toml') -> dict:
 def get_all_spellings(words: dict):
     """
     :param words: original dict of all words and misspellings. Using Dict due to Toml Module
-    :return:generator of bad spellings
+    :return:List of bad spellings.  Not a generator, by design, as the list can be re-used for each company.
     """
-    for word in words.get('sec_words'):
-        for bad_spellings in words.get('sec_words').get(word).get('patterns'):
-            yield bad_spellings
-    logger.info(f"Retrieved all incorrect spellings")
+    return [bad_spellings for word in words.get('sec_words') for bad_spellings in words.get('sec_words').get(word).get('patterns')]
 
 
 def search_h1_web_data(company_name, misspelled_words_list, web_text):
@@ -40,5 +37,5 @@ def search_h1_web_data(company_name, misspelled_words_list, web_text):
     :return:generator of results
     """
     logger.debug(f"Checking {company_name}")
-    return [(company_name, s) for s in misspelled_words_list if re.search(s, web_text, flags=re.I | re.A)]
+    return [(company_name, s) for s in misspelled_words_list if re.search(r"\b" + s + r"\b", web_text, flags=re.I | re.A)]
 

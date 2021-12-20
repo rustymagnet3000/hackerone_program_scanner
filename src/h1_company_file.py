@@ -11,7 +11,6 @@ def open_file_of_companies():
     logger.info(f"Attempting to open {filename}")
     with open(filename, 'r', newline='') as result_file_csv:
         csv_reader = reader(result_file_csv)
-        next(csv_reader)    # skip first row as it is Column Headers
         return [company for company in map(H1Program._make, csv_reader)]
 
 
@@ -34,7 +33,7 @@ def filter_company_file():
     :return: list
     """
     companies = open_file_of_companies()
-    if companies is None or len(companies) is 0:
+    if companies is None or len(companies) == 0:
         logger.warning(f"Error reading report")
         return None
     # commented out filter as barely any companies meet the criteria
