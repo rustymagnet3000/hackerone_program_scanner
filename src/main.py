@@ -22,7 +22,8 @@ def prime_time_scrape(company_name, list_words):
 def main():
     h1_creds = check_h1_credentials_exist()
     if h1_creds is None:
-        sys(exit())
+        logger.info("Exiting as no HackerOne credentials found")
+        return None
 
     # Todo: Menu options to get H1 program info to write local file
     clean_companies_file()
@@ -38,3 +39,5 @@ def main():
     #         print(res)
 
 
+if __name__ == "__main__":
+    sys.exit(main())

@@ -11,7 +11,13 @@ GET https://api.hackerone.com/v1/hackers/programs
 The API does not reveal info about `Private` programs.
 
 
+### Usage
+
 ```bash
+# Set credentials file /.env
+H1_USERNAME  = < write email used to log into H1 >
+H1_API_TOKEN = < paste API Token from H1 >
+
 # poetry ( inside of /src folder )
 poetry run h1-script
 
@@ -46,7 +52,7 @@ After trial and error, it was clear that HackerOne was checking the request was 
 ```
 ### Add words
 
-To expand the spelling mistakes to check for, add them to: `/conf/words.toml`.
+To expand the spelling check add them to: `/conf/words.toml`.
 
 ### Test
 
