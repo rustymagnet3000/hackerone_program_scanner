@@ -19,8 +19,8 @@ def tidy(h1: H1Program):
     Dormant filter use to focus search on H1 Companies who are not H1 Triaged and Pay Rewards
     :return: Bool
     """
-    if h1.offers_bounties == 'False' or h1.offers_bounties == '':
-        return False
+    # if h1.offers_bounties == 'False' or h1.offers_bounties == '':
+    #     return False
     if h1.triage_active == 'True':
         return False
     return True
@@ -37,7 +37,7 @@ def filter_company_file():
         logger.warning(f"Error reading report")
         return None
     # commented out filter as barely any companies meet the criteria
-    # filtered_list = list(filter(tidy, companies))
+    filtered_list = list(filter(tidy, companies))
     logger.debug(f"Finished reading Company File. Found {len(companies)} companies")
     return companies
 

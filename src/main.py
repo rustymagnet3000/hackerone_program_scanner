@@ -22,7 +22,8 @@ def prime_time_scrape(company_name, list_words):
 def main():
     h1_creds = check_h1_credentials_exist()
     if h1_creds is None:
-        sys(exit())
+        logger.info("Exiting as no HackerOne credentials found")
+        return None
 
     # Todo: Menu options to get H1 program info to write local file
     clean_companies_file()
@@ -31,10 +32,12 @@ def main():
                              next_url=api_get_programs_endpoint)
     assert result is True
     # Todo: Menu options for scraping web after read of local file
-    # words_list = get_all_spellings(get_word_file())
-    # for c in filter_company_file():
-    #     res = prime_time_scrape(c.name, words_list)
-    #     if res is not None and len(res) > 0:
-    #         print(res)
+    words_list = get_all_spellings(get_word_file())
+    for c in filter_company_file():
+        res = prime_time_scrape(c.name, words_list)
+        if res is not None and len(res) > 0:
+            print(res)
 
 
+if __name__ == "__main__":
+    sys.exit(main())

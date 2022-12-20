@@ -12,7 +12,7 @@ def clean_companies_file():
     try:
         os.remove(filename)
         logger.info(f"Removed existing Company file{filename}")
-    except FileNotFoundError as e:
+    except FileNotFoundError:
         logger.debug(f"{filename}.\tno such file or directory")
     else:
         logger.warning(f"unhandled error removing {filename}.")
@@ -25,7 +25,7 @@ def write_results_to_file(results: list):
         logger.warning(f"No results found.")
         return False
 
-    with open(filename, 'w', newline='') as result_file:  # overwrites any results that exist in the file
+    with open(filename, 'a', newline='') as result_file:
         csv_out = csv.writer(result_file)
         for r in results:
             csv_out.writerow(r)
@@ -60,7 +60,7 @@ def get_h1_programs(username, token, next_url, limit_results=False):
     h1_results = resp.json().get("data")
 
     if next_url and limit_results is False:
-        logger.info(f'Following pagination: {next_url}')
+        logger.info(f'Calling pagination link: {next_url}')
         get_h1_programs(username, token, next_url)
 
     # Unwind recursion. Iterating through all H1 Program with a for loop
